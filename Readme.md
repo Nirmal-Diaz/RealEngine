@@ -21,4 +21,10 @@ Haha.. Just kidding..
 * Global settings include
   - Real-time acceleration: Apply acceleration data from the device's accelerometer to simulation (Device accelerometer required)
   - Custom acceleration: Only useful when real-time acceleration is off
-  - Acceleration scale: Since 1pixel maps to a 1meter in real world, 1:1 scale acceleration makes the objects appear moving slowly 
+  - Acceleration scale: Since 1pixel maps to a 1meter in real world, 1:1 scale acceleration makes the objects appear moving slowly
+  
+ ## WHAT'S THE DEAL WITH THE SCREENSAVER
+ 1. You must completely ignore that
+ * Just kidding again...
+ 1. The screensaver is made by just adding a few lines of code to the original RealEngine code
+ * Actually some lines are removed for the sake of performance improvements (But those removals are completely unnecessary)
