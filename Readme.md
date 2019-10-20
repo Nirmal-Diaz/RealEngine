@@ -1,6 +1,5 @@
 # RealEngine
-A physics engine that models several concepts of linear motion
-Why use UnrealEngine when you can use RealEngine?
+A physics engine that models several concepts of linear motion. Why use UnrealEngine when you can use RealEngine?
 Haha.. Just kidding..
 
 ## PREREQUISITES
