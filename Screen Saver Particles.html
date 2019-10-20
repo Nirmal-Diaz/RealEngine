@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en-us" xmlns="http://www.w3.org/1999/xhtml" style="height: 100%; width: 100%;">
+<meta charset="UTF-8" />
+
+<head>
+    <title>Realistic Physics</title>
+    <style>
+        * {
+            /* border: thin solid red; */
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            color: white;
+            font-family: "Calibri";
+            font-size: 30px;
+        }
+
+        body {
+            height: 100%;
+            width: 100%;
+        }
+
+        .canvas {
+            position: absolute;
+
+            height: 100%;
+            width: 100%;
+
+            background-color: black;
+        }
+    </style>
+    <script>
+        //@ts-check
+        let canvas, context2D;
+
+        //The physicsEngine calculates motionVariables (i.e. s, v) based on passed time between two frames
+        //Therefore it is required to keep track of time when the last frame was rendered
+        let lastTime = new Date().getTime();
+
+        const objects = [];
+
+        function generateRandomObjects(amount = 20) {
+            for (let i = 0; i <= amount; i++) {
+                const object = {
+                    xCoordinate: Math.floor(Math.random() * (canvas.width - 5 - 10 + 1) + 10) + 1,
+                    yCoordinate: Math.floor(Math.random() * (canvas.height - 5 - 10 + 1) + 10) + 1,
+                    xVelocity: Math.floor(Math.random() * (80 - 10 + 1) + 10) + 1,
+                    yVelocity: Math.floor(Math.random() * (80 - 10 + 1) + 10) + 1,
+                    xDirection: Boolean(Math.round(Math.random())),
+                    yDirection: Boolean(Math.round(Math.random())),
+                    radius: 5
+                }
+                objects.push(object);
+            }
+        }
+
+        function calculateVerticalMotion(timeDifference, object) {
+            if (object.yDirection === true) {
+                let newYCoordinate = object.yCoordinate + (object.yVelocity * timeDifference);
+                //This is where the object goes out of bounds at the bottom
+                if (newYCoordinate >= canvas.height - object.radius) {
+                    newYCoordinate = canvas.height - object.radius;
+                    object.yDirection = false;
+                }
+                //Update object's yCoordinate in the object object
+                object.yCoordinate = newYCoordinate;
+            } else {
+                let newYCoordinate = object.yCoordinate - (object.yVelocity * timeDifference);
+                //This is where the object goes out of bounds at the top
+                if (newYCoordinate <= object.radius) {
+                    newYCoordinate = object.radius;
+                    object.yDirection = true;
+                }
+                //Update object's yCoordinate in the object object
+                object.yCoordinate = newYCoordinate;
+            }
+
+        }
+
+        function calculateHorizontalMotion(timeDifference, object) {
+            if (object.xDirection === true) {
+                let newXCoordinate = object.xCoordinate + (object.xVelocity * timeDifference);
+                if (newXCoordinate >= canvas.width - object.radius) {
+                    newXCoordinate = canvas.width - object.radius;
+                    object.xDirection = false;
+                }
+                object.xCoordinate = newXCoordinate;
+            } else {
+                let newXCoordinate = object.xCoordinate - (object.xVelocity * timeDifference);
+                if (newXCoordinate <= object.radius) {
+                    newXCoordinate = object.radius;
+                    object.xDirection = true;
+                }
+                object.xCoordinate = newXCoordinate;
+            }
+        }
+
+        function animateObjects() {
+            const currentTime = new Date().getTime();
+            const timeDifference = (currentTime - lastTime) / 1000;
+            lastTime = currentTime;
+
+            //Calculate motion for each object and update variables
+            for (let i = 0; i < objects.length; i++) {
+                calculateHorizontalMotion(timeDifference, objects[i]);
+                calculateVerticalMotion(timeDifference, objects[i]);
+            }
+
+            //Clear the canvas before rendering
+            context2D.clearRect(0, 0, canvas.width, canvas.height);
+            //Draw each object on the canvas
+            context2D.beginPath();
+            context2D.fillStyle = "gray";
+            for (let i = 0; i < objects.length; i++) {
+                context2D.moveTo(objects[i].xCoordinate, objects[i].yCoordinate);
+                context2D.arc(objects[i].xCoordinate, objects[i].yCoordinate, objects[i].radius, 0, 2 * Math.PI);
+            }
+            context2D.fill();
+            //Draw connection lines if any 2 objects are closer than a given distance
+            context2D.beginPath();
+            context2D.strokeStyle = "gray";
+            for (let i = 0; i < objects.length - 1; i++) {
+                for (let j = i+1; j < objects.length; j++) {
+                    const distance = Math.sqrt(Math.pow(objects[i].xCoordinate - objects[j].xCoordinate, 2) + Math.pow(objects[i].yCoordinate - objects[j].yCoordinate, 2));
+                    if (distance <= 150) {
+                        context2D.moveTo(objects[i].xCoordinate, objects[i].yCoordinate);
+                        context2D.lineTo(objects[j].xCoordinate, objects[j].yCoordinate);
+                    }
+                }
+            }
+            context2D.stroke();
+
+            window.requestAnimationFrame(animateObjects);
+        }
+
+        function setViewport() {
+            const canvasBoundingRect = canvas.getBoundingClientRect();
+            canvas.height = canvasBoundingRect.height;
+            canvas.width = canvasBoundingRect.width;
+        }
+
+        function initiate() {
+            //Initialize global variables
+            canvas = document.getElementById("canvas");
+            context2D = canvas.getContext("2d");
+
+            //Add eventListeners
+            window.addEventListener("resize", setViewport);
+
+            //Execute initiation procedure
+            setViewport();
+            generateRandomObjects(50);
+            window.requestAnimationFrame(animateObjects);
+        }
+    </script>
+</head>
+
+<body onload="initiate();">
+    <canvas id="canvas" class="canvas"></canvas>
+</body>
+
+</html>
