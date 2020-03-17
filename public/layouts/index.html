@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en-us" style="height: 100%; width: 100%">
+
+<head>
+    <title id="title">RealEngine</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="manifest" href="../manifest.webmanifest" />
+    <link href="../stylesheets/styles.css" rel="stylesheet" />
+
+    <script src="../scripts/main.js"></script>
+</head>
+
+<body onload="main();">
+    <div id="realEngineViewport" class="viewport">
+        <canvas id="canvas" class="canvas"></canvas>
+    </div>
+
+    <div id="addObjectPanel" class="panel panel-popIn" style="z-index: 3;">
+        <form class="panelDivision">
+            <h1 class="title">Velocity</h1>
+            <p class="titleDescription">
+                Sets the "velocity" of the object. "Velocity" won't stay constant if an "acceleration" is applied.
+                "Velocity" is also affected by the "constant of elasticity" when colliding with the boundary.
+                Direction of "velocity" must be set using negative or positive values appropriately
+            </p class="titleDescription">
+            <div id="xVelocity" class="inputContainer">
+                <input name="xVelocity" type="range" min="0" max="2000" step="10" value="50" class="input-range" />
+                <label class="display">X 50</label>
+            </div>
+            <div id="yVelocity" class="inputContainer">
+                <input type="range" min="0" max="2000" step="10" value="100" class="input-range" />
+                <label class="display">Y 100</label>
+            </div>
+            <h1 class="title">Radius</h1>
+            <p class="titleDescription">
+                Sets the "size" of the object. The "size" won't affect the physical simulation in any way and is
+                only there for aesthetic purposes
+            </p>
+            <div id="radius" class="inputContainer">
+                <input name="radius" type="range" min="5" max="100" step="5" value="30" class="input-range" />
+                <label class="display">30</label>
+            </div>
+            <h1 class="title">Constant of Elasticity</h1>
+            <p class="titleDescription">
+                Sets the "bouncy-ness" of the object. "Constant of elasticity" affects the "velocity" when colliding
+                with the boundary
+            </p>
+            <div id="elasticConstant" class="inputContainer">
+                <input name="elasticConstant" type="range" min="0" max="1" step="0.1" value="0.8" class="input-range" />
+                <label class="display">0.8</label>
+            </div>
+        </form>
+        <div class="buttonContainer">
+            <button id="addObject" class="button" style="border-top-right-radius: 10px;">ADD</button>
+        </div>
+    </div>
+
+    <div id="globalSettingsPanel" class="panel panel-popOut" style="z-index: 4;">
+        <form class="panelDivision">
+            <h1 class="title">Real-Time Acceleration</h1>
+            <p class="titleDescription">
+                Your device need to have an accelerometer for this to work. When the "real-time acceleration" is on,
+                the engine will gather acceleration from the accelerometer and apply to all objects in the
+                simulation. "Custom acceleration" is useless with "real-time acceleration"
+            </p>
+            <div id="realTimeAcceleration" class="inputContainer">
+                <input name="realTimeAcceleration" type="checkbox" class="input-check" />
+                <label class="display">Inactive</label>
+            </div>
+            <h1 class="title">Custom Acceleration</h1>
+            <p class="titleDescription">
+                When the "real-time acceleration" is off, you can define your own acceleration for all the bodies in
+                the simulation. This acceleration will stay constant. "Custom acceleration" is useless with
+                "real-time acceleration"
+            </p>
+            <div id="customXAcceleration" class="inputContainer">
+                <input name="customXAcceleration" type="range" min="0" max="10" step="1" value="0"
+                    class="input-range" />
+                <label class="display">X 0</label>
+            </div>
+            <div id="customYAcceleration" class="inputContainer">
+                <input name="customYAcceleration" type="range" min="0" max="10" step="1" value="0"
+                    class="input-range" />
+                <label class="display">Y 0</label>
+            </div>
+            <h1 class="title">Acceleration Scale</h1>
+            <p class="titleDescription">
+                The device represents a meter(m) by a pixel(px). Therefore the objects seem to move very slowly in
+                the simulation. You can adjust the "acceleration scale" to multiply all accelerations by the
+                "acceleration scale" constant to make objects move faster
+            </p>
+            <div id="accelerationScale" class="inputContainer">
+                <input name="accelerationScale" type="range" min="0" max="1000" step="10" value="500"
+                    class="input-range" />
+                <label class="display">500</label>
+            </div>
+        </form>
+        <div class="buttonContainer">
+            <button id="applyGlobalSettings" class="button" style="border-top-right-radius: 10px;">APPLY</button>
+        </div>
+    </div>
+
+    <button id="navigationControl"></button>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+{
+  "background_color": "black",
+  "description": "A simple real-time physics simulation",
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "imageRes/icons/launcher_192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "name": "RealEngine",
+  "short_name": "RealEngine",
+  "start_url": "/"
+}
